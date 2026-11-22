@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Thermal scans and everything generated from them
+Data/
+*.mat
+output_images*/
+output_overlay_system/
+results/
