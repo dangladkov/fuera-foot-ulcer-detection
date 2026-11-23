@@ -1,4 +1,4 @@
-![Both soles drawn as the detector's grid of temperature tiles, four of them outlined](assets/banner.png)
+![Both soles drawn as a grid of temperature tiles, with seven tiles near the toes outlined in white on each foot](assets/banner.png)
 
 # FUERA
 
@@ -11,11 +11,7 @@ Client project, team of 5, University of Twente • Design Project module (11) �
 
 ## Results / Demo
 
-![Thermal images of both soles, day by day, while a hot spot grows on the right foot](assets/wound_timeline.gif)
-
-![The detector's coloured tiles over both soles, day by day](assets/detection_until_flag.gif)
-
-![Rows of filled squares for five realism scores, and rows of numbered squares for four reordered sequences](assets/s3-results.png)
+![Both soles as thermal scans and as colored tiles, day by day, while a hot spot grows near the right foot's toes until its tiles turn magenta](assets/wound-detection.gif)
 
 We had no real pre-ulcer scans to test against, so ZGT judged the generated wounds by eye. Five random wounds scored 15 of 25 for realism, with the plain circle rated lowest and the many-blob wounds read as the most realistic. ZGT put three of four shuffled growth sequences back in order, one with a single swap, and took a natural warm spot for the wound in the fourth.
 
@@ -23,7 +19,7 @@ We had no real pre-ulcer scans to test against, so ZGT judged the generated woun
 
 FUERA has two Python scripts that run one after the other, a generator that writes a synthetic wound series and a detector that reads it. They share no code and pass data only through the `.mat` files that the generator saves, one per day.
 
-![Three views of the same soles: two thermal images and one tile grid](assets/s1-stages.png)
+![A left sole stays still while the right sole beside it flips, turns, scales and bends until it lines up with the left sole's blue outline](assets/foot-alignment.gif)
 
 ZGT gave us 10 days of thermal scans of 15 healthy people, of the soles and the tops of both feet, taken with its Bath Mat. On each person's first day, `generate_heatspot_mask_model.py` mirrors the right foot onto the left and rotates, scales and slightly warps it with PyTorch until their outlines overlap best. It reuses that alignment for every later day and copies temperatures pixel by pixel, so aligning never changes them. The alignment was needed because the camera saw the two feet from different angles.
 
@@ -31,7 +27,7 @@ The generator then stretches the 10 real days into a longer series by repeating 
 
 Over the growth days the wound grows from a speck to its full size and warms evenly. Its core and ring both end 3 °C warmer than the same spot on the other foot, blended into the scan with a Gaussian blur. For every day the generator saves both feet as a `.mat` file and an image.
 
-![Forty small thermal images in two rows, one boxed](assets/s2-timeline.png)
+![Six snapshots of the same patch of colored tiles, with purple tiles on four days in a row and a magenta cluster on the last day](assets/tile-closeup.png)
 
 `detect_wounds_both.py` reads the series day by day and cuts both feet into small square tiles. The literature, ZGT's Bath Mat study and an author we interviewed agreed that a 2.2 °C difference between the same spot on both feet is the only validated warning sign. The contralateral check marks a tile that differs from the same tile on the other foot by 2.0 °C or more. The unilateral check, modeled on Lavery et al. (2019), learns each tile's normal range from healthy days at the start and marks a tile that leaves that range.
 
